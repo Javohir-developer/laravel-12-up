@@ -1,6 +1,6 @@
 import '@/bootstrap';
 import { createApp } from 'vue';
-import App from '@/backend/layouts/main.vue';
+import App from '@/layouts/main/main.vue';
 import router from '@/router';
 
 const app = createApp(App);

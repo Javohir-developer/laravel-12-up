@@ -7,21 +7,35 @@ services:
             dockerfile: Dockerfile
         volumes:
             - ../:/var/www/laravel-test-1
+        depends_on:
+            - container-postgres-test-v1
         ports:
             - "9000:90"
+        networks:
+            - mynetwork
 
-    postgres:
+    container-postgres-test-v1:
         image: postgres:13
         container_name: container-postgres
         restart: always
         environment:
-            POSTGRES_USER: testuser
-            POSTGRES_PASSWORD: testpass
-            POSTGRES_DB: testdb
+            DB_CONNECTION: pgsql
+            DB_HOST: postgres
+            DB_PORT: 5432
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            POSTGRES_DB: admin
         volumes:
             - postgres_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+        networks:
+            - mynetwork
+
+
+networks:
+    mynetwork:
+        driver: bridge
 
 volumes:
     postgres_data:

@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Sidebar from "@/backend/layouts/sidebar.vue";
-import Footer from "@/backend/layouts/footer.vue";
+import Sidebar from "@/layouts/main/sidebar.vue";
+import Footer from "@/layouts/main/footer.vue";
 
 export default {
     components: { Sidebar, Footer }
