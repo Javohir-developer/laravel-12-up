@@ -27,7 +27,7 @@ RUN #chmod -R 775 /var/www/laravel-test-1/bootstrap/cache
 COPY laravel-test-1.conf /etc/nginx/sites-available/default
 
 # Portni ochish
-EXPOSE 90
+EXPOSE 80
 
 # Nginx va PHP-FPMni ishga tushirish
 CMD ["sh", "-c", "service nginx start && php-fpm"]
