@@ -25,6 +25,11 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/movie/index', [MovieController::class, 'index'])->name('movie.index');
+    Route::get('/movie/create', [MovieController::class, 'create'])->name('movie.create');
+    Route::post('/movie/store', [MovieController::class, 'store'])->name('movie.store');
+    Route::get('/movie/edit/{id}', [MovieController::class, 'edit'])->name('movie.edit');
+    Route::put('/movie/update/{id}', [MovieController::class, 'update'])->name('movie.update');
+    Route::delete('/movie/destroy/{id}', [MovieController::class, 'destroy'])->name('movie.destroy');
     Route::get('/movie/test', [MovieController::class, 'test'])->name('movie.test');
 });
 

@@ -17,14 +17,9 @@ class MovieService
         $this->movieRepository = $movieRepository;
     }
 
-    public function getAllMovies()
+    public function getAllMovies(array $filters = [])
     {
-        return $this->movieRepository->getAll();
-    }
-
-    public function getFilteredMovies(Request $request)
-    {
-        return $this->movieRepository->getByFilters($request);
+        return $this->movieRepository->getAll($filters);
     }
 
     public function createMovies(array $data)

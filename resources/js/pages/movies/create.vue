@@ -1,65 +1,77 @@
 <template>
-    <div class="container">
+    <AdminLayout>
+            <div class="container">
         <div class="invoices">
             <div class="card__header">
                 <div>
                     <h2 class="invoice__title">New Invoice</h2>
                 </div>
             </div>
-            <form @submit.prevent="onSubmit">
+            <form @submit.prevent="submit">
                 <div class="card__content">
                     <div class="card__content--header">
                         <div class="mb-4">
                             <label class="block mb-1 font-semibold">title</label>
-                            <Field name="title" type="text" class="input" />
-                            <ErrorMessage name="title" class="text-red-500" />
+                            <input type="text" v-model="form.title" class="input" />
+                            <div v-if="form.errors.title" class="text-red-500 mt-1 text-sm">{{ form.errors.title }}</div>
                         </div>
                         <div class="mb-4">
                             <label class="block mb-1 font-semibold">description</label>
-                            <Field name="description" type="text" class="input" />
-                            <ErrorMessage name="description" class="text-red-500" />
+                            <input type="text" v-model="form.description" class="input" />
+                            <div v-if="form.errors.description" class="text-red-500 mt-1 text-sm">{{ form.errors.description }}</div>
                         </div>
                         <div class="mb-4">
                             <label class="block mb-1 font-semibold">release_year</label>
-                            <Field name="release_year" type="number" class="input" />
-                            <ErrorMessage name="release_year" class="text-red-500" />
+                            <input type="number" v-model="form.release_year" class="input" />
+                            <div v-if="form.errors.release_year" class="text-red-500 mt-1 text-sm">{{ form.errors.release_year }}</div>
                         </div>
                         <div class="mb-4">
                             <label class="block mb-1 font-semibold">rating</label>
-                            <Field name="rating" type="number" class="input" />
-                            <ErrorMessage name="rating" class="text-red-500" />
+                            <input type="number" v-model="form.rating" class="input" />
+                            <div v-if="form.errors.rating" class="text-red-500 mt-1 text-sm">{{ form.errors.rating }}</div>
                         </div>
                         <div class="mb-4">
                             <label class="block mb-1 font-semibold">Status</label>
-                            <Field name="status_id" as="select" class="input" v-slot="{ field }">
-                                <option value="">-- Tanlang --</option>
+                            <select v-model="form.status_id" class="input">
+                                <option value="" disabled>-- Tanlang --</option>
                                 <option v-for="status in options" :key="status.id" :value="status.id">{{ status.name }}</option>
-                            </Field>
-                            <ErrorMessage name="status_id" class="text-red-500" />
+                            </select>
+                            <div v-if="form.errors.status_id" class="text-red-500 mt-1 text-sm">{{ form.errors.status_id }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="card__header" style="margin-top: 40px;">
                     <div>
-                        <button class="btn btn-secondary"  type="submit">Save</button>
+                        <button class="btn btn-secondary" type="submit" :disabled="form.processing">Save</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    </AdminLayout>
+
 </template>
 
 
-<script lang="ts" setup>
-import { onMounted } from 'vue'
-import { Field, ErrorMessage } from 'vee-validate'
-import createMovieForm, { moviesCreateParams } from './js/create'
-const { onSubmit } = createMovieForm()
-const { options, loadOptions } = moviesCreateParams()
+<script setup>
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+import { useForm } from '@inertiajs/vue3';
 
-onMounted(() => {
-    loadOptions()
-})
+const props = defineProps({
+    options: Array
+});
+
+const form = useForm({
+    title: '',
+    description: '',
+    release_year: '',
+    rating: '',
+    status_id: ''
+});
+
+const submit = () => {
+    form.post(route('movie.store'));
+};
 </script>
 
 <style scoped>

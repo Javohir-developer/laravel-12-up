@@ -6,23 +6,19 @@ use App\Models\Status;
 
 class MovieRepository
 {
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return Movie::all();
-    }
-    public function getByFilters($request)
-    {
-        $query =  Movie::query();
+        $query = Movie::query();
 
-        if (!empty($request->id)) {
-            $query->where('id', $request->id);
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
         }
 
-        if (!empty($request->title)) {
-            $query->where('title', 'like', '%' . $request->title . '%');
+        if (!empty($filters['title'])) {
+            $query->where('title', 'like', '%' . $filters['title'] . '%');
         }
 
-        return $query->paginate()->all();
+        return $query->paginate(10);
     }
 
     public function createMovies(array $data)

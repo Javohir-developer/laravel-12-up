@@ -53,7 +53,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { Field, ErrorMessage } from 'vee-validate'
-import editMovie, { moviesEditParams } from './js/edit'
+import editMovie, { moviesEditParams } from '../../Composables/movies/edit'
 const { onSubmit } = editMovie()
 const { 
     arrayStatusParams, loadStatus, 

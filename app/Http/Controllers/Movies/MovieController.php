@@ -18,29 +18,34 @@ class MovieController extends Controller
 
    public function index(Request $request)
    {
+        $filters = $request->only(['id', 'title']);
+        $movies = $this->movieService->getAllMovies($filters);
 
-       $movies = $this->movieService->getAllMovies();
         return Inertia::render('Movies/Index', [
-            'movie' => $movies
+            'movie' => $movies,
+            'filters' => $request->only(['id', 'title'])
         ]);
    }
 
    public function create()
    {
-       return view('movies.create');
+       $options = $this->movieService->getStatus();
+       return Inertia::render('Movies/Create', [
+           'options' => $options
+       ]);
    }
 
    public function store(MovieRequest $request)
    {
        $this->movieService->createMovies($request->validated());
-       return redirect()->route('movies.index');
+       return redirect()->route('movie.index');
    }
 
 
    public function update(MovieRequest $request, $id)
    {
        $movie = $this->movieService->updateMovies($id, $request->validated());
-       return redirect()->route('movies.index')
+       return redirect()->route('movie.index')
            ->with('success', 'Movie updated successfully')
            ->with('updatedMovie', $movie);
    }
