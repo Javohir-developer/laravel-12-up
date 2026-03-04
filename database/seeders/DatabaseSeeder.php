@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Database\Seeders\Movies\MovieSeeder;
+use Database\Seeders\Elasticsearch\ElasticIndexSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,5 +22,6 @@ class DatabaseSeeder extends Seeder
 //        ]);
 
         $this->call(MovieSeeder::class);
+        $this->call(ElasticIndexSeeder::class);
     }
 }

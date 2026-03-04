@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->year('release_year');
-            $table->decimal('rating', 3, 1);
-            $table->timestamps();
+            $table->float('rating');
+            $table->text('comment')->nullable();
+            $table->text('status_id')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

@@ -21,20 +21,20 @@ class MovieRequest extends FormRequest
             return [
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'release_year' => 'required|integer|min:1900|max:' . date('Y'),
-                'rating' => 'required|numeric|min:0|max:10',
+                'release_year' => 'required|integer',
+                'rating' => 'required|integer'
             ];
         }
 
         // Agar update bo‘lsa
-        if ($this->isMethod('put') && $routeName === 'movies.update') {
-            return [
-                'title' => 'sometimes|required|string|max:255',
-                'description' => 'nullable|string',
-                'release_year' => 'sometimes|required|integer|min:1900|max:' . date('Y'),
-                'rating' => 'sometimes|required|numeric|min:0|max:10',
-            ];
-        }
+//        if ($this->isMethod('put') && $routeName === 'movies.update') {
+//            return [
+//                'title' => 'sometimes|required|string|max:255',
+//                'description' => 'nullable|string',
+//                'release_year' => 'sometimes|required|integer|min:1900|max:' . date('Y'),
+//                'rating' => 'sometimes|required|numeric|min:0|max:10',
+//            ];
+//        }
 
         return [];
     }

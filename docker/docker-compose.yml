@@ -7,21 +7,70 @@ services:
             dockerfile: Dockerfile
         volumes:
             - ../:/var/www/laravel-test-1
+        depends_on:
+            - container-postgres-test-v1
+            - elasticsearch
         ports:
+<<<<<<< HEAD
             - "8000:80"
+=======
+            - "9000:90"
+        networks:
+            - mynetwork
+>>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
 
-    postgres:
+    container-postgres-test-v1:
         image: postgres:13
         container_name: container-postgres
         restart: always
         environment:
-            POSTGRES_USER: testuser
-            POSTGRES_PASSWORD: testpass
-            POSTGRES_DB: testdb
+            DB_CONNECTION: pgsql
+            DB_HOST: postgres
+            DB_PORT: 5432
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            POSTGRES_DB: admin1
         volumes:
             - postgres_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+        networks:
+            - mynetwork
+
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:9.1.0
+        container_name: elasticsearch
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+        volumes:
+            - esdata:/usr/share/elasticsearch/data
+        ports:
+            - "9200:9200"
+        networks:
+            - mynetwork 
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - "8080:8080"
+        networks:
+            - mynetwork
+
+    # redis:
+    #     image: redis:7
+    #     ports:
+    #     - "6379:6379"
+    #     command: ["redis-server", "--appendonly", "yes"]
+    #     volumes:
+    #     - redis-data:/data
+
+networks:
+    mynetwork:
+        driver: bridge
 
 volumes:
     postgres_data:
+    esdata:
+    # redis-data:

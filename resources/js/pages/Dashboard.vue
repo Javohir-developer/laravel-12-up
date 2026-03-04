@@ -7,6 +7,7 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
+<<<<<<< HEAD
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
@@ -15,6 +16,8 @@ import { Head } from '@inertiajs/vue3';
             </h2>
         </template>
 
+=======
+>>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div

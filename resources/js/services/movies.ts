@@ -1,5 +1,6 @@
 import api from './api.js'
 
+<<<<<<< HEAD
 export function getMovies() {
     return api.get('/movies')
 }
@@ -19,6 +20,19 @@ export function requestForGetMovie(id: string) {
 
 export function getMoviesOption() {
     return api.get('/get-status')
+=======
+export function getMovies(params = {}) {
+    return api.get('/movies', { params })
+}
+
+export function createMovie(data) {
+    return api.post('/create-movies', data)
+}
+
+
+export function getMoviesOption(params = {}) {
+    return api.get('/get-status', { params })
+>>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
 }
 
 
