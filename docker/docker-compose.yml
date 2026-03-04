@@ -25,7 +25,7 @@ services:
             DB_PORT: 5432
             POSTGRES_USER: admin
             POSTGRES_PASSWORD: admin
-            POSTGRES_DB: admin
+            POSTGRES_DB: admin1
         volumes:
             - postgres_data:/var/lib/postgresql/data
         ports:
@@ -45,6 +45,14 @@ services:
             - "9200:9200"
         networks:
             - mynetwork 
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - "8080:8080"
+        networks:
+            - mynetwork
 
     # redis:
     #     image: redis:7
