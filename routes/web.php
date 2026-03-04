@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\Movies\MovieController;
+use App\Http\Controllers\App\Profile\ProfileController;
+use App\Http\Controllers\App\Movies\MovieController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;

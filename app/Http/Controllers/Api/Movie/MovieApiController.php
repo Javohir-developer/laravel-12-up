@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Movie;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Movies\MovieRequest;
 use App\Services\Movies\MovieService;
 use Illuminate\Http\Request;

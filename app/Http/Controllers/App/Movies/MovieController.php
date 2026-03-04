@@ -1,7 +1,7 @@
 <?php
-namespace App\Http\Controllers\Movies;
+namespace App\Http\Controllers\App\Movies;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\App\Controller;
 use App\Http\Requests\Movies\MovieRequest;
 use App\Services\Movies\MovieService;
 use App\Services\ElasticsearchService\ElasticsearchService;
