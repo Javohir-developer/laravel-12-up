@@ -162,10 +162,10 @@
     </AdminLayout>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import ButtonLink from '@/Components/ButtonLink.vue';
+import { useMoviesIndex } from '../../Composables/movies/index.ts';
 
 const props = defineProps({
   test: String,
@@ -174,33 +174,5 @@ const props = defineProps({
   filters: Object
 });
 
-const form = useForm({
-    id: props.filters?.id || '',
-    title: props.filters?.title || ''
-});
-
-const submitFilters = () => {
-    form.get(route('movie.index'), {
-        preserveState: true,
-        preserveScroll: true
-    });
-};
-
-const resetFilters = () => {
-    form.id = '';
-    form.title = '';
-    form.get(route('movie.index'));
-};
-
-const formatDate = (dateStr) => {
-  if (!dateStr) return 'N/A';
-  const d = new Date(dateStr);
-  return d.toLocaleString("en-GB", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-};
+const { form, submitFilters, resetFilters, formatDate } = useMoviesIndex(props.filters || {});
 </script>

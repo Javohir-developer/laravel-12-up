@@ -1,35 +1,40 @@
+import { useForm } from '@inertiajs/vue3';
 
-import { ref } from 'vue'
-import { getMovies } from '@/services/movies.ts'
+export function useMoviesIndex(initialFilters: { id?: string | number, title?: string } = {}) {
+    const form = useForm({
+        id: initialFilters.id || '',
+        title: initialFilters.title || ''
+    });
 
-//                  LOADING AND FILTIR TABLE
-// ============================================================================================
-export const moviesList = ref([]);
-export const filters =  ref({
-    id: null,
-    title: null,
-    sort: 'created_at_desc'
-});
+    const submitFilters = () => {
+        form.get(route('movie.index'), {
+            preserveState: true,
+            preserveScroll: true
+        });
+    };
 
-export async function loadMovies() {
-    try {
-        const response = await getMovies()
-        moviesList.value = response.data
-    } catch (e) {
-        console.error('Movie loading error:', e)
-    }
+    const resetFilters = () => {
+        form.id = '';
+        form.title = '';
+        form.get(route('movie.index'));
+    };
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'N/A';
+        const d = new Date(dateStr);
+        return d.toLocaleString("en-GB", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    };
+
+    return {
+        form,
+        submitFilters,
+        resetFilters,
+        formatDate
+    };
 }
-
-export async function submitFilters() {
-    try {
-        const response = await getMovies(filters.value)
-        moviesList.value = response.data
-    } catch (e) {
-        console.error('Movie loading error:', e)
-    }
-}
-
-export function moviesTableParams() {
-    return { filters, moviesList, loadMovies, submitFilters }
-}
-// ============================================================================================
