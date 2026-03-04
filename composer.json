@@ -7,10 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-<<<<<<< HEAD
-=======
         "elasticsearch/elasticsearch": "^9.1",
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
