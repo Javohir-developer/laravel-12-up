@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories\Movies;
 
-use App\Models\Movies\Movie;
+use App\Models\Movie;
 use App\Models\Status;
 
 class MovieRepository
