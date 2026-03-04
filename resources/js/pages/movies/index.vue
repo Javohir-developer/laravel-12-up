@@ -1,146 +1,174 @@
-<<<<<<< HEAD
 <template>
-    <div class="container">
+    <Head title="Movies Dashboard" />
 
-        <!--==================== INVOICE LIST ====================-->
-        <div class="invoices">
-
-            <div class="card__header">
-                <div>
-                    <h2 class="invoice__title">Movies</h2>
-                </div>
-                <div>
-                    <a class="btn btn-secondary">
-                        <router-link :to="{name: 'create.movies'}"> Add New Movie </router-link>
-                    </a>
-                </div>
-            </div>
-
-            <div class="table card__content">
-                <div class="table--filter">
-                <span class="table--filter--collapseBtn ">
-                    <i class="fas fa-ellipsis-h"></i>
-                </span>
-                    <div class="table--filter--listWrapper">
-                        <ul class="table--filter--list">
-                            <li>
-                                <p class="table--filter--link table--filter--link--active">
-                                    All
-                                </p>
-                            </li>
-                            <li>
-                                <p class="table--filter--link ">
-                                    Paid
-                                </p>
-                            </li>
-                        </ul>
+    <AdminLayout>
+        <template #header>
+            Movies Management
+        </template>
+        
+        <div class="container mx-auto">
+            <!--==================== INVOICE LIST ====================-->
+            <div class="invoices">
+                <div class="card__header flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Movies List</h2>
                     </div>
-                </div>
-                <form @submit.prevent="submitFilters">
-                <div class="table--search">
-                    <div class="table--search--wrapper">
-                        <select class="table--search--select" name="" id="" v-model = "filters.id">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </div>
-                    <div class="relative">
-                        <i class="table--search--input--icon fas fa-search "></i>
-                        <input class="table--search--input" type="text" placeholder="Search invoice" v-model = "filters.title">
-                    </div>
-                    <button type="submit" class="form-button">
-                        submit
-                    </button>
-                </div>
-                </form>
-                <div class="table--heading">
-                    <p>ID</p>
-                    <p>title</p>
-                    <p>description</p>
-                    <p>release year</p>
-                    <p>rating</p>
-                    <p>created_at</p>
-                    <div>edit</div>
-                </div>
-
-                <!-- item 1 -->
-                <div v-for="movie in moviesList" :key="movie.id" class="table--items" >
-                    <a href="#" class="table--items--transactionId">#{{ movie.id }}</a>
-                    <p>{{ movie.title }}</p>
-                    <p>{{ movie.description }}</p>
-                    <p>{{ movie.release_year }}</p>
-                    <p>{{ movie.rating }}</p>
-                    <p>{{ formatDate(movie.created_at) }}</p>
-                    <p>
-                        <router-link :to="{name: 'edit.movies', params: { id: movie.id } }"> 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-0-circle" viewBox="0 0 16 16"><path d="M7.988 12.158c-1.851 0-2.941-1.57-2.941-3.99V7.84c0-2.408 1.101-3.996 2.965-3.996 1.857 0 2.935 1.57 2.935 3.996v.328c0 2.408-1.101 3.99-2.959 3.99M8 4.951c-1.008 0-1.629 1.09-1.629 2.895v.31c0 1.81.627 2.895 1.629 2.895s1.623-1.09 1.623-2.895v-.31c0-1.8-.621-2.895-1.623-2.895"/><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8"/></svg>
+                    <div>
+                        <router-link :to="{name: 'create.movies'}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg inline-flex items-center transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Add New Movie 
                         </router-link>
-                    </p>
+                    </div>
                 </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="table--filter mb-4 flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                        <span class="table--filter--collapseBtn text-gray-500 hover:text-gray-700 cursor-pointer">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </span>
+                        <div class="table--filter--listWrapper">
+                            <ul class="flex space-x-4">
+                                <li>
+                                    <p class="text-indigo-600 border-b-2 border-indigo-600 pb-1 font-medium cursor-pointer">
+                                        All
+                                    </p>
+                                </li>
+                                <li>
+                                    <p class="text-gray-500 hover:text-gray-700 pb-1 cursor-pointer transition-colors">
+                                        Paid
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <form @submit.prevent="submitFilters" class="mb-6">
+                        <div class="flex flex-wrap gap-4 items-center bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="relative">
+                                <select class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" v-model="filters.id">
+                                    <option value="" disabled>Select ID</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                </div>
+                            </div>
+                            
+                            <div class="relative flex-1">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                </span>
+                                <input class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" type="text" placeholder="Search movies by title..." v-model="filters.title">
+                            </div>
+                            
+                            <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="overflow-x-auto rounded-lg border border-gray-200">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr v-for="movie in moviesList" :key="movie.id" class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-800">
+                                            #{{ movie.id }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{ movie.title }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                                        {{ movie.description }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ movie.release_year }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <span class="text-sm font-medium text-amber-500 mr-1">{{ movie.rating }}</span>
+                                            <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ formatDate(movie.created_at) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <router-link :to="{name: 'edit.movies', params: { id: movie.id } }" class="text-indigo-600 hover:text-indigo-900 inline-flex items-center justify-center p-2 hover:bg-indigo-50 rounded-lg transition-colors"> 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/></svg>
+                                        </router-link>
+                                    </td>
+                                </tr>
+                                <tr v-if="moviesList.length === 0">
+                                    <td colspan="7" class="px-6 py-10 text-center text-sm text-gray-500">
+                                        No movies found matching your criteria.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Debug Section (from second version) -->
+                <div v-if="test || response" class="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Debug Information</h3>
+                    <div class="mb-4">
+                        <ButtonLink :href="route('movie.test')">Movies test function</ButtonLink>
+                    </div>
+                    <p v-if="test" class="text-gray-600 mb-4"><span class="font-semibold text-gray-800">Test:</span> {{ test }}</p>
+                    <div v-if="response" class="bg-slate-900 text-slate-300 p-4 rounded-lg overflow-x-auto text-sm font-mono">
+                        <h4 class="text-white font-semibold mb-2">Elasticsearch Response:</h4>
+                        <pre>{{ response }}</pre>
+                    </div>
+                </div>
+
             </div>
-
         </div>
-
-    </div>
+    </AdminLayout>
 </template>
 
+<script setup>
+import { onMounted, ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+import ButtonLink from '@/Components/ButtonLink.vue';
+import { moviesTableParams } from './js/index.ts';
 
-<script type="ts" setup>
-import { onMounted, ref} from 'vue'
-import { moviesTableParams } from './js/index.ts'
-const { filters, moviesList, loadMovies, submitFilters } = moviesTableParams()
+const props = defineProps({
+  test: String,
+  response: Object
+});
+
+const { filters, moviesList, loadMovies, submitFilters } = moviesTableParams();
 
 onMounted(() => {
-    loadMovies()
-})
+    loadMovies();
+});
 
 const formatDate = (dateStr) => {
+  if (!dateStr) return 'N/A';
   const d = new Date(dateStr);
   return d.toLocaleString("en-GB", {
     year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
+    month: "short",
+    day: "numeric",
     hour: "2-digit",
     minute: "2-digit"
   });
 };
 </script>
-
-=======
-<script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import ButtonLink from '@/Components/ButtonLink.vue';
-import { Head } from '@inertiajs/vue3';
-defineProps({
-  test: String,
-  response: Object
-})
-</script>
-
-<template>
-
-    <Head title="Dashboard" />
-
-    <AuthenticatedLayout>
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg" >
-                    <div class="p-6">
-                        <ButtonLink  :href="route('movie.test')" > Movies test function </ButtonLink>
-                        <br><br>
-                        <p class="text-gray-600 mb-4">Test: {{ test }}</p>
-                        <div class="bg-gray-100 p-4 rounded-lg">
-                        <h2 class="font-semibold">Elasticsearch javobi:</h2>
-                        <pre>{{ response }}</pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </AuthenticatedLayout>
-
-</template>
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215

@@ -13,47 +13,29 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div>
         <div class="min-h-screen bg-gray-100">
-<<<<<<< HEAD
-            <nav
-                class="border-b border-gray-100 bg-white"
-            >
-=======
-            <nav class="border-b border-gray-100 bg-white" >
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
+            <nav class="border-b border-gray-100 bg-white">
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-<<<<<<< HEAD
                                 <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
+                                    <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800" />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
-                            >
-                                <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                >
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-=======
-                                <Link :href="route('dashboard')"> <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800"  /> </Link>
-                            </div>
-
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"  >
-                                <NavLink  :href="route('dashboard')"  :active="route().current('dashboard')" >   Dashboard </NavLink>
-                                <NavLink  :href="route('profile.edit')"   :active="route().current('profile.edit')">   Profile </NavLink>
-                                <NavLink  :href="route('movie.index')"   :active="route().current('movie.index')">   Movie </NavLink>
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
+                                <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
+                                    Profile
+                                </NavLink>
+                                <NavLink :href="route('movie.index')" :active="route().current('movie.index')">
+                                    Movie
+                                </NavLink>
                             </div>
                         </div>
 
@@ -147,7 +129,6 @@ const showingNavigationDropdown = ref(false);
                 </div>
 
                 <!-- Responsive Navigation Menu -->
-<<<<<<< HEAD
                 <div
                     :class="{
                         block: showingNavigationDropdown,
@@ -160,11 +141,6 @@ const showingNavigationDropdown = ref(false);
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-=======
-                <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown, }" class="sm:hidden"  >
-                    <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink  :href="route('dashboard')" :active="route().current('dashboard')" >
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
@@ -200,19 +176,12 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </nav>
 
-<<<<<<< HEAD
             <!-- Page Heading -->
-            <header
-                class="bg-white shadow"
-                v-if="$slots.header"
-            >
+            <header class="bg-white shadow" v-if="$slots.header">
                 <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>
-
-=======
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
             <!-- Page Content -->
             <main>
                 <slot />

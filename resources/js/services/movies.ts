@@ -1,8 +1,7 @@
 import api from './api.js'
 
-<<<<<<< HEAD
-export function getMovies() {
-    return api.get('/movies')
+export function getMovies(params: object = {}) {
+    return api.get('/movies', { params })
 }
 
 export function createMovie(data: object = {}) {
@@ -17,24 +16,9 @@ export function requestForGetMovie(id: string) {
     return api.get(`/get-movie-for-edit/${id}`)
 }
 
-
-export function getMoviesOption() {
-    return api.get('/get-status')
-=======
-export function getMovies(params = {}) {
-    return api.get('/movies', { params })
-}
-
-export function createMovie(data) {
-    return api.post('/create-movies', data)
-}
-
-
-export function getMoviesOption(params = {}) {
+export function getMoviesOption(params: object = {}) {
     return api.get('/get-status', { params })
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
 }
-
 
 // export function getMovieById(id) {
 //     return api.get(`/movies/${id}`)

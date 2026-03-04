@@ -19,10 +19,9 @@ class MovieController extends Controller
    public function index(Request $request)
    {
 
-    //    $movies = $this->movieService->getAllMovies();
-    //    return view('movies.index', compact('movies'));
-    return Inertia::render('movies/index', [
-            'movies' => session('movies'),
+       $movies = $this->movieService->getAllMovies();
+        return Inertia::render('Movies/Index', [
+            'movie' => $movies
         ]);
    }
 
