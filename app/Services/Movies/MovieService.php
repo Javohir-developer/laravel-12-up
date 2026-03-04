@@ -44,4 +44,9 @@ class MovieService
     {
         return $this->movieRepository->getStatus();
     }
+
+    public function deleteMovies($id)
+    {
+        return $this->movieRepository->delete($id);
+    }
 }
