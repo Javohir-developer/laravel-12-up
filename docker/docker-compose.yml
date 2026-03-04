@@ -9,15 +9,11 @@ services:
             - ../:/var/www/laravel-test-1
         depends_on:
             - container-postgres-test-v1
-            - elasticsearch
+            # - elasticsearch
         ports:
-<<<<<<< HEAD
-            - "8000:80"
-=======
-            - "9000:90"
+            - "9000:80"
         networks:
             - mynetwork
->>>>>>> f946413cffde185a4b24753e1313de5c7e61d215
 
     container-postgres-test-v1:
         image: postgres:13
@@ -37,19 +33,6 @@ services:
         networks:
             - mynetwork
 
-    elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:9.1.0
-        container_name: elasticsearch
-        environment:
-            - discovery.type=single-node
-            - xpack.security.enabled=false
-        volumes:
-            - esdata:/usr/share/elasticsearch/data
-        ports:
-            - "9200:9200"
-        networks:
-            - mynetwork 
-
     adminer:
         image: adminer
         restart: always
@@ -57,6 +40,20 @@ services:
             - "8080:8080"
         networks:
             - mynetwork
+
+
+    # elasticsearch:
+    #     image: docker.elastic.co/elasticsearch/elasticsearch:9.1.0
+    #     container_name: elasticsearch
+    #     environment:
+    #         - discovery.type=single-node
+    #         - xpack.security.enabled=false
+    #     volumes:
+    #         - esdata:/usr/share/elasticsearch/data
+    #     ports:
+    #         - "9200:9200"
+    #     networks:
+    #         - mynetwork 
 
     # redis:
     #     image: redis:7
