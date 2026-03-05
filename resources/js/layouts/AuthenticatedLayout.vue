@@ -8,6 +8,15 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
+import { useLang } from '@/Composables/useLang.js';
+const { getLocale, t } = useLang();
+
+const availableLocales = {
+    'uz': 'O\'zbek',
+    'ru': 'Русский',
+    'en': 'English'
+};
 </script>
 
 <template>
@@ -28,18 +37,40 @@ const showingNavigationDropdown = ref(false);
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    {{ t('dashboard') }}
                                 </NavLink>
                                 <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
-                                    Profile
+                                    {{ t('profile') }}
                                 </NavLink>
                                 <NavLink :href="route('movie.index')" :active="route().current('movie.index')">
-                                    Movie
+                                    {{ t('movies') }}
                                 </NavLink>
                             </div>
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                            <!-- Language Switcher -->
+                            <div class="relative ms-3 mr-2">
+                                <Dropdown align="right" width="48">
+                                    <template #trigger>
+                                        <button class="flex items-center space-x-1 text-sm font-medium text-gray-500 transition-colors hover:text-gray-700 focus:outline-none focus:text-gray-700">
+                                            <span class="uppercase font-semibold tracking-wider">{{ getLocale() }}</span>
+                                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </button>
+                                    </template>
+                                    <template #content>
+                                        <div class="py-1">
+                                            <a v-for="(name, code) in availableLocales" :key="code" :href="route('lang.switch', {locale: code})" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
+                                                <div class="flex items-center space-x-2" :class="{'font-bold text-indigo-600': getLocale() === code}">
+                                                    <span>{{ name }}</span>
+                                                    <svg v-if="getLocale() === code" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </template>
+                                </Dropdown>
+                            </div>
+
                             <!-- Settings Dropdown -->
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
@@ -141,7 +172,7 @@ const showingNavigationDropdown = ref(false);
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Dashboard
+                            {{ t('dashboard') }}
                         </ResponsiveNavLink>
                     </div>
 
@@ -162,7 +193,7 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
+                                {{ t('profile') }}
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 :href="route('logout')"

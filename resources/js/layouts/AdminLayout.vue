@@ -10,6 +10,15 @@ const showingNavigationDropdown = ref(false);
 const sidebarOpen = ref(false);
 
 const page = usePage();
+
+import { useLang } from '@/Composables/useLang.js';
+const { getLocale, t } = useLang();
+
+const availableLocales = {
+    'uz': 'O\'zbek',
+    'ru': 'Русский',
+    'en': 'English'
+};
 </script>
 
 <template>
@@ -40,7 +49,7 @@ const page = usePage();
                         ]"
                     >
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                        <span class="font-medium">Dashboard</span>
+                        <span class="font-medium">{{ t('dashboard') }}</span>
                     </Link>
                     
                     <Link
@@ -53,7 +62,7 @@ const page = usePage();
                         ]"
                     >
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
-                        <span class="font-medium">Movies</span>
+                        <span class="font-medium">{{ t('movies') }}</span>
                     </Link>
                 </nav>
             </div>
@@ -64,7 +73,7 @@ const page = usePage();
                     class="flex items-center px-4 py-3 text-slate-300 transition-colors rounded-xl hover:bg-slate-800 hover:text-white"
                 >
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    <span class="font-medium">Settings</span>
+                    <span class="font-medium">{{ t('profile') }}</span>
                 </Link>
             </div>
         </aside>
@@ -92,6 +101,28 @@ const page = usePage();
                         <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     </button>
+
+                    <!-- Language Switcher -->
+                    <div class="relative ms-3">
+                        <Dropdown align="right" width="48">
+                            <template #trigger>
+                                <button class="flex items-center space-x-1 text-sm font-medium text-gray-500 transition-colors hover:text-gray-700 focus:outline-none focus:text-gray-700">
+                                    <span class="uppercase font-semibold tracking-wider">{{ getLocale() }}</span>
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                            </template>
+                            <template #content>
+                                <div class="py-1">
+                                    <a v-for="(name, code) in availableLocales" :key="code" :href="route('lang.switch', {locale: code})" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
+                                        <div class="flex items-center space-x-2" :class="{'font-bold text-indigo-600': getLocale() === code}">
+                                            <span>{{ name }}</span>
+                                            <svg v-if="getLocale() === code" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                    </a>
+                                </div>
+                            </template>
+                        </Dropdown>
+                    </div>
 
                     <!-- User Dropdown -->
                     <div class="relative ms-3 border-l pl-4 border-gray-200">

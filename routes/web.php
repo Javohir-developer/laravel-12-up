@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\App\Profile\ProfileController;
 use App\Http\Controllers\App\Movies\MovieController;
+use App\Http\Controllers\App\LanguageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -10,6 +11,8 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+Route::get('lang/{locale}', [LanguageController::class, 'switchLang'])->name('lang.switch');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

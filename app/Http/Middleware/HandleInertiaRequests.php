@@ -29,11 +29,22 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $locale = app()->getLocale();
+        $translations = [];
+
+        // Faqat main.php dagi tarjimalarni Inertia-ga yuboramiz
+        $langPath = lang_path($locale . '/main.php');
+        if (file_exists($langPath)) {
+            $translations = require $langPath;
+        }
+
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
+            'locale' => $locale,
+            'translations' => $translations,
         ];
     }
 }

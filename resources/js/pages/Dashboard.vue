@@ -1,6 +1,9 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import { useLang } from '../Composables/useLang.js';
+
+const { t } = useLang();
 
 const stats = [
     { name: 'Total Users', value: '420', change: '+12%', changeType: 'positive', icon: 'svg-users' },
@@ -20,20 +23,20 @@ const stats = [
 
         <div class="py-4">
             <!-- Welcome Banner -->
-            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-lg p-6 sm:p-10 mb-8 text-white relative overflow-hidden">
-                <div class="relative z-10">
-                    <h2 class="text-3xl font-bold mb-2">Welcome back, Admin! 👋</h2>
+            <!-- <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-lg p-6 sm:p-10 mb-8 text-white relative overflow-hidden"> -->
+                <!-- <div class="relative z-10">
+                    <h2 class="text-3xl font-bold mb-2">{{ t('welcome') }} 👋</h2>
                     <p class="text-indigo-100 max-w-xl text-lg">
                         Here is what's happening with your projects today. You have 3 new notifications waiting to be reviewed.
                     </p>
-                </div>
+                </div> -->
                 <!-- Decorative element -->
-                <div class="absolute right-0 top-0 w-64 h-full hidden md:block opacity-10 pointer-events-none">
+                <!-- <div class="absolute right-0 top-0 w-64 h-full hidden md:block opacity-10 pointer-events-none">
                     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#ffffff" d="M42.7,-73.4C55.9,-65.7,67.7,-54.6,76.5,-41.4C85.3,-28.3,91.1,-14.1,88.4,-1.5C85.7,11.2,74.5,22.4,65.3,34.7C56.1,47.1,48.9,60.6,37.6,68.9C26.3,77.2,11,80.3,-2.8,85.1C-16.7,89.9,-29.1,76.4,-39.7,66.7C-50.3,57,-59.1,51.1,-65.5,42.7C-71.9,34.3,-75.8,23.3,-76.3,12C-76.8,0.7,-73.8,-11,-67.9,-20.9C-62,-30.9,-53.2,-39.2,-43.3,-46.8C-33.3,-54.4,-22.1,-61.4,-8.6,-66.9C5,-72.4,18.4,-76.3,29.3,-81.1L42.7,-73.4Z" transform="translate(100 100)" />
                     </svg>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
 
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
