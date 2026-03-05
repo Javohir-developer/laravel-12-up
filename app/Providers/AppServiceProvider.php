@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-use App\Services\ElasticsearchService;
+use App\Services\ElasticsearchService\ElasticsearchService;
 
 class AppServiceProvider extends ServiceProvider
 {
