@@ -14,6 +14,7 @@ class Movie extends Model
         'release_year',
         'rating',
         'status_id',
+        'image'
     ];
 
     protected $with = ['status'];  // har doim yuklaydi

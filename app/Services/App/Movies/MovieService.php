@@ -5,17 +5,16 @@ use App\Jobs\AddComment;
 use App\Jobs\SendEmailJob;
 use App\Models\Movies\Movie;
 use App\Repositories\App\Movies\MovieRepository;
+use App\Services\Common\FileUploadService;
 use Illuminate\Http\Request;
 
 class MovieService
 {
 
-    protected $movieRepository;
-
-    public function __construct(MovieRepository $movieRepository)
-    {
-        $this->movieRepository = $movieRepository;
-    }
+    public function __construct(
+        private MovieRepository $movieRepository,
+        private FileUploadService $fileUploadService
+    ) {}
 
     public function getAllMovies($request)
     {
@@ -25,6 +24,9 @@ class MovieService
 
     public function createMovies(array $data)
     {
+        if (isset($data['image'])) {
+            $data['image'] = $this->fileUploadService->upload($data['image']);
+        }
         $movieRepository = $this->movieRepository->createMovies($data);
 //        dispatch(new AddComment($movieRepository->title, $movieRepository->id));
         return $movieRepository;

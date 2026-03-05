@@ -38,6 +38,19 @@
                             </select>
                             <div v-if="form.errors.status_id" class="text-red-500 mt-1 text-sm">{{ form.errors.status_id }}</div>
                         </div>
+
+                        <!-- ✅ Image upload -->
+                        <div class="mb-4">
+                            <label class="block mb-1 font-semibold">Image</label>
+                            <input type="file" accept="image/*" class="input" @change="handleImage" />
+                            <!-- Preview -->
+                            <div v-if="imagePreview" class="mt-2">
+                                <img :src="imagePreview" class="w-40 h-40 object-cover rounded" />
+                            </div>
+                            <div v-if="form.errors.image" class="text-red-500 mt-1 text-sm">{{ form.errors.image }}</div>
+                        </div>
+
+
                     </div>
                 </div>
                 <div class="card__header" style="margin-top: 40px;">
@@ -55,23 +68,13 @@
 
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useMovieCreate } from '@/Composables/movie/create.js';
 
 const props = defineProps({
     options: Array
 });
 
-const form = useForm({
-    title: '',
-    description: '',
-    release_year: '',
-    rating: '',
-    status_id: ''
-});
-
-const submit = () => {
-    form.post(route('movie.store'));
-};
+const { form, imagePreview, handleImage, submit } = useMovieCreate();
 </script>
 
 <style scoped>

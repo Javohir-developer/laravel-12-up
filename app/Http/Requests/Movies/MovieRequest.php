@@ -24,6 +24,7 @@ class MovieRequest extends FormRequest
                 'release_year' => 'required|integer',
                 'rating' => 'required|numeric',
                 'status_id' => 'required|integer',
+                'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             ];
         }
 
@@ -35,6 +36,7 @@ class MovieRequest extends FormRequest
                 'release_year' => 'required|integer',
                 'rating' => 'required|numeric',
                 'status_id' => 'required|integer',
+                'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             ];
         }
 
