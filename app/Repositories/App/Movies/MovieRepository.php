@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories\Movies;
+namespace App\Repositories\App\Movies;
 
 use App\Models\Movie;
 use App\Models\Status;

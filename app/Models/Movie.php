@@ -15,4 +15,11 @@ class Movie extends Model
         'rating',
         'status_id',
     ];
+
+    protected $with = ['status'];  // har doim yuklaydi
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id', 'id');
+    }
 }

@@ -1,10 +1,10 @@
 <?php
-namespace App\Services\Movies;
+namespace App\Services\App\Movies;
 
 use App\Jobs\AddComment;
 use App\Jobs\SendEmailJob;
 use App\Models\Movies\Movie;
-use App\Repositories\Movies\MovieRepository;
+use App\Repositories\App\Movies\MovieRepository;
 use Illuminate\Http\Request;
 
 class MovieService
@@ -17,8 +17,9 @@ class MovieService
         $this->movieRepository = $movieRepository;
     }
 
-    public function getAllMovies(array $filters = [])
+    public function getAllMovies($request)
     {
+        $filters = $request->only(['id', 'title']);
         return $this->movieRepository->getAll($filters);
     }
 
