@@ -13,5 +13,6 @@ class Movie extends Model
         'description',
         'release_year',
         'rating',
+        'status_id',
     ];
 }

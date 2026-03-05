@@ -41,6 +41,21 @@ class MovieController extends Controller
        return redirect()->route('movie.index');
    }
 
+   public function edit($id)
+   {
+       $movie = $this->movieService->getMoviesById($id);
+       $options = $this->movieService->getStatus();
+       
+       if (!$movie) {
+           return redirect()->route('movie.index')->with('error', 'Movie not found');
+       }
+       
+       return Inertia::render('Movies/Edit', [
+           'movie' => $movie,
+           'options' => $options
+       ]);
+   }
+
 
    public function update(MovieRequest $request, $id)
    {

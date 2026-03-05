@@ -41,6 +41,18 @@ services:
         networks:
             - mynetwork
 
+    vite:
+        image: node:20
+        container_name: container-vite
+        working_dir: /var/www/laravel-test-1
+        volumes:
+            - ../:/var/www/laravel-test-1
+        ports:
+            - "5173:5173"
+        command: sh -c "npm install && npm run dev"
+        networks:
+            - mynetwork
+
 
     # elasticsearch:
     #     image: docker.elastic.co/elasticsearch/elasticsearch:9.1.0
