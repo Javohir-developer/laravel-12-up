@@ -3,38 +3,33 @@
 namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Models\User;
+use App\Http\Requests\Auth\ApiLoginRequest;
+use App\Services\Api\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends BaseApiController
 {
+    public function __construct(
+        private AuthService $authService
+    ) {}
+
     /**
      * Handle an incoming authentication request.
      */
-    public function login(Request $request)
+    public function login(ApiLoginRequest $request)
     {
-        $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-            'device_name' => ['required'],
-        ]);
+        $result = $this->authService->login($request->validated());
 
-        $user = User::where('email', $request->email)->first();
+        return $this->sendResponse($result, 'Muvaffaqiyatli kirildi.');
+    }
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => [__('auth.failed')],
-            ]);
-        }
-
-        $token = $user->createToken($request->device_name)->plainTextToken;
-
-        return $this->sendResponse([
-            'token' => $token,
-            'user' => $user->only(['id', 'name', 'email']),
-        ], 'Muvaffaqiyatli kirildi.');
+    /**
+     * Get the authenticated user.
+     */
+    public function me(Request $request)
+    {
+        $result = $this->authService->me($request);
+        return $this->sendResponse($result, 'Foydalanuvchi ma\'lumotlari.');
     }
 
     /**
@@ -42,7 +37,7 @@ class AuthController extends BaseApiController
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $this->authService->logout($request->user());
 
         return $this->sendResponse([], 'Muvaffaqiyatli chiqildi.');
     }

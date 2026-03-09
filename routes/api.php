@@ -6,14 +6,11 @@ use App\Http\Controllers\Api\v1\Movie\MovieController;
 use App\Http\Controllers\Api\V1\Payment\PaymentController;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::middleware('auth:sanctum')->group(function () {
 
+        Route::get('/me', [AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::apiResource('movies', MovieController::class);
 
@@ -26,7 +23,6 @@ Route::prefix('v1')->group(function () {
             Route::delete('/payment/{provider}/transactions/{id}/cancel', [PaymentController::class, 'cancel']);
         });
     });
-
     // Webhook — auth shart emas
     Route::post('/payment/{provider}/webhook', [PaymentController::class, 'webhook']);
 });
