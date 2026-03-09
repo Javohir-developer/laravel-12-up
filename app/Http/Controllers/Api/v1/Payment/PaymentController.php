@@ -21,7 +21,7 @@ class PaymentController extends BaseApiController
         $service = $this->paymentFactory->make($provider);
 
         $result = $service->addCard(
-            auth('sanctum')->id(),
+            auth()->id() ?? auth('sanctum')->id(),
             $request->card_number,
             $request->expire
         );
@@ -55,7 +55,7 @@ class PaymentController extends BaseApiController
         $transaction = $service->initiatePayment(
             $request->order_id,
             $request->card_id,
-            auth('sanctum')->id()
+            auth()->id() ?? auth('sanctum')->id()
         );
 
         return $this->sendResponse([
