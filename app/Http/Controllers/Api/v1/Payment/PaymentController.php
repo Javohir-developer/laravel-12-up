@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\V1\Payment;
 
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Requests\Payment\CardCreateRequest;
-use App\Http\Requests\Payment\CardVerifyRequest;
-use App\Http\Requests\Payment\PaymentRequest;
+use App\Http\Requests\App\Payment\CardCreateRequest;
+use App\Http\Requests\App\Payment\CardVerifyRequest;
+use App\Http\Requests\App\Payment\PaymentRequest;
 use App\Services\Common\Payment\PaymentFactory;
 use Illuminate\Http\Request;
 

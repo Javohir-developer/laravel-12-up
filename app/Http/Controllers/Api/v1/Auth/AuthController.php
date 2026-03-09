@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Requests\Auth\ApiLoginRequest;
+use App\Http\Controllers\Api\v1\Controller;
+use App\Http\Requests\Api\Auth\LoginRequest;
+use App\Resources\Auth\AuthResource;
 use App\Services\Api\AuthService;
 use Illuminate\Http\Request;
 
-class AuthController extends BaseApiController
+class AuthController extends Controller
 {
     public function __construct(
         private AuthService $authService
@@ -16,11 +17,10 @@ class AuthController extends BaseApiController
     /**
      * Handle an incoming authentication request.
      */
-    public function login(ApiLoginRequest $request)
+    public function login(LoginRequest $request)
     {
         $result = $this->authService->login($request->validated());
-
-        return $this->sendResponse($result, 'Muvaffaqiyatli kirildi.');
+        return $this->sendResponse(new AuthResource($result), 'Muvaffaqiyatli kirildi.');
     }
 
     /**
@@ -29,7 +29,7 @@ class AuthController extends BaseApiController
     public function me(Request $request)
     {
         $result = $this->authService->me($request);
-        return $this->sendResponse($result, 'Foydalanuvchi ma\'lumotlari.');
+        return $this->sendResponse(new AuthResource($result), 'Foydalanuvchi ma\'lumotlari.');
     }
 
     /**

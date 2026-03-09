@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\App\Movies;
 
 use App\Http\Controllers\App\Controller;
-use App\Http\Requests\Movies\MovieRequest;
+use App\Http\Requests\App\Movies\MovieRequest;
 use App\Services\App\Movies\MovieService;
 use App\Services\ElasticsearchService\ElasticsearchService;
 use Illuminate\Http\Request;

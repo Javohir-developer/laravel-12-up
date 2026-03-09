@@ -30,10 +30,7 @@ class AuthService
 
         return [
             'token' => $token,
-            'user' => array_merge(
-                $user->only(['id', 'name', 'email']),
-                ['roles' => $user->getRoleNames()]
-            ),
+            'user' => $user,
         ];
     }
 
@@ -47,10 +44,7 @@ class AuthService
     {
         $user = $request->user();
         return [
-            'user' => array_merge(
-                $user->only(['id', 'name', 'email']),
-                ['roles' => $user->getRoleNames()]
-            ),
+            'user' => $user,
             'token' => $request->bearerToken(),
         ];
     }
