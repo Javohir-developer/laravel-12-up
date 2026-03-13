@@ -81,6 +81,7 @@ class PaymentController extends BaseApiController
     // Webhook (Payme, Click va h.k lar uchun)
     public function webhook(string $provider, Request $request)
     {
+        
         $service = $this->paymentFactory->make($provider);
 
         return $service->handleWebhook($request);

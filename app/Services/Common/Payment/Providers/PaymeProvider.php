@@ -223,6 +223,7 @@ class PaymeProvider implements PaymentProviderInterface
         $transaction = Transaction::where('transaction_id', $transactionId)->first();
 
         if (!$transaction) {
+            
             $transaction = Transaction::create([
                 'transaction_id' => $transactionId,
                 'order_id'       => $orderId,

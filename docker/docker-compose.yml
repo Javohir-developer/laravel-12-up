@@ -11,7 +11,7 @@ services:
             - container-postgres-test-v1
             # - elasticsearch
         ports:
-            - "9000:80"
+            - "8000:80"
         networks:
             - mynetwork
 

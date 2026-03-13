@@ -18,6 +18,10 @@ class Transaction extends Model
         'amount',
         'status',
         'payme_response',
+        'create_time',
+        'perform_time',
+        'cancel_time',
+        'reason',
     ];
 
     protected $casts = [
