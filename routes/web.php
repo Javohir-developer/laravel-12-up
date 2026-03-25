@@ -2,8 +2,7 @@
 
 use App\Http\Controllers\Users\ProfileController;
 use App\Http\Controllers\Movies\MovieController;
-use App\Http\Controllers\LanguageController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Lang\LanguageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
