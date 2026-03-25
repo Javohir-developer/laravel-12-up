@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\App\Users\ProfileController;
-use App\Http\Controllers\App\Movies\MovieController;
-use App\Http\Controllers\App\LanguageController;
+use App\Http\Controllers\Users\ProfileController;
+use App\Http\Controllers\Movies\MovieController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-use App\Http\Controllers\App\Users\RoleController;
-use App\Http\Controllers\App\Users\UserRoleController;
+use App\Http\Controllers\Users\RoleController;
+use App\Http\Controllers\Users\UserRoleController;
 
 Route::get('/', function () {return redirect()->route('login');});
 Route::get('lang/{locale}', [LanguageController::class, 'switchLang'])->name('lang.switch');
