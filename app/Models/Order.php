@@ -15,6 +15,10 @@ class Order extends Model
         'status',
     ];
 
+    protected $casts = [
+        'status' => \App\Enums\TransactionStatusEnum::class,
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

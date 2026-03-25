@@ -114,7 +114,6 @@ class PaymeProvider implements PaymentProviderInterface
                 // Order ni yangilash
                 $order->update(['status' => 'paid']);
             }
-
         } catch (\Exception $e) {
             $transaction->update([
                 'status' => TransactionStatusEnum::FAILED,
@@ -156,17 +155,19 @@ class PaymeProvider implements PaymentProviderInterface
         // 1. Autentifikatsiya tekshirish
         if (!$this->authenticate($request)) {
             return response()->json([
+                "jsonrpc" => "2.0",
+                'id'      => $request->input('id'),
                 'error' => [
                     'code'    => -32504,
                     'message' => 'Insufficient privilege to perform this method',
                 ]
-            ], 401);
+            ], 200);
         }
 
         $method = $request->input('method');
         $params = $request->input('params', []);
 
-        return match($method) {
+        return match ($method) {
             'CheckPerformTransaction' => $this->checkPerformTransaction($params),
             'CreateTransaction'       => $this->createTransaction($params),
             'PerformTransaction'      => $this->performTransaction($params),
@@ -188,29 +189,37 @@ class PaymeProvider implements PaymentProviderInterface
 
         if (!$order) {
             return response()->json([
-                'error' => [
+                "jsonrpc" => "2.0",
+                'id'      => request()->input('id'),
+                'error'   => [
                     'code'    => -31050,
-                    'message' => ['ru' => 'Заказ не найден', 'uz' => 'Buyurtma topilmadi'],
+                    'message' => ['ru' => 'Заказ не найден', 'en' => 'Order not found', 'uz' => 'Buyurtma topilmadi'],
                     'data'    => 'order_id',
                 ]
-            ]);
+            ], 200);
         }
 
-        if ($order->total_amount * 100 !== $amount) {
+        if ($order->total_amount !== (int)$amount / 100) {
             return response()->json([
-                'error' => [
+                "jsonrpc" => "2.0",
+                'id'      => request()->input('id'),
+                'error'   => [
                     'code'    => -31001,
                     'message' => ['ru' => 'Неверная сумма', 'uz' => 'Summa xato'],
                     'data'    => 'amount',
                 ]
-            ]);
+            ], 200);
         }
 
         return response()->json([
-            'result' => [
+            "jsonrpc" => "2.0",
+            'id'      => request()->input('id'),
+            'result'  => [
                 'allow' => true,
+                "order_id" => (string)$orderId,
+                "description" => "Buyurtma #{$orderId} uchun to'lov"
             ]
-        ]);
+        ], 200);
     }
 
     private function createTransaction(array $params): \Illuminate\Http\JsonResponse
@@ -223,7 +232,20 @@ class PaymeProvider implements PaymentProviderInterface
         $transaction = Transaction::where('transaction_id', $transactionId)->first();
 
         if (!$transaction) {
-            
+            $activeTransaction = Transaction::where('order_id', $orderId)
+                ->where('status', TransactionStatusEnum::PROCESSING)
+                ->first();
+
+            if ($activeTransaction) {
+                return response()->json([
+                    "jsonrpc" => "2.0",
+                    'id'      => request()->input('id'),
+                    'error' => [
+                        'code'    => -31050,
+                        'message' => ['ru' => 'Заказ недоступен для оплаты', 'en' => 'Order is not available for payment', 'uz' => 'Buyurtma to\'lov uchun mavjud emas'],
+                    ]
+                ], 200);
+            }
             $transaction = Transaction::create([
                 'transaction_id' => $transactionId,
                 'order_id'       => $orderId,
@@ -234,13 +256,15 @@ class PaymeProvider implements PaymentProviderInterface
         }
 
         return response()->json([
+            "jsonrpc" => "2.0",
+            'id'      => request()->input('id'),
             'result' => [
                 'create_time'   => $time,
                 'transaction'   => (string)$transaction->id,
                 'state'         => 1,
                 'receivers'     => null,
             ]
-        ]);
+        ], 200);
     }
 
     private function performTransaction(array $params): \Illuminate\Http\JsonResponse
@@ -251,11 +275,13 @@ class PaymeProvider implements PaymentProviderInterface
 
         if (!$transaction) {
             return response()->json([
+                "jsonrpc" => "2.0",
+                'id'      => request()->input('id'),
                 'error' => [
                     'code'    => -31003,
                     'message' => ['ru' => 'Транзакция не найдена'],
                 ]
-            ]);
+            ], 200);
         }
 
         $transaction->update([
@@ -263,16 +289,18 @@ class PaymeProvider implements PaymentProviderInterface
         ]);
 
         if ($transaction->order) {
-            $transaction->order->update(['status' => 'paid']);
+            $transaction->order->update(['status' => TransactionStatusEnum::PAID]);
         }
 
         return response()->json([
-            'result' => [
+            "jsonrpc" => "2.0",
+            'id'      => request()->input('id'),
+            'result'  => [
                 'transaction'  => (string)$transaction->id,
                 'perform_time' => now()->timestamp * 1000,
                 'state'        => 2,
             ]
-        ]);
+        ], 200);
     }
 
     private function cancelTransaction(array $params): \Illuminate\Http\JsonResponse
@@ -289,12 +317,14 @@ class PaymeProvider implements PaymentProviderInterface
         }
 
         return response()->json([
-            'result' => [
+            "jsonrpc" => "2.0",
+            'id'      => request()->input('id'),
+            'result'  => [
                 'transaction' => (string)$transaction?->id,
                 'cancel_time' => now()->timestamp * 1000,
                 'state'       => -1,
             ]
-        ]);
+        ], 200);
     }
 
     private function checkTransaction(array $params): \Illuminate\Http\JsonResponse
@@ -303,14 +333,18 @@ class PaymeProvider implements PaymentProviderInterface
 
         if (!$transaction) {
             return response()->json([
+                "jsonrpc" => "2.0",
+                'id'      => request()->input('id'),
                 'error' => [
                     'code'    => -31003,
                     'message' => ['ru' => 'Транзакция не найдена'],
                 ]
-            ]);
+            ], 200);
         }
 
         return response()->json([
+            "jsonrpc" => "2.0",
+            'id'      => request()->input('id'),
             'result' => [
                 'create_time'  => $transaction->created_at->timestamp * 1000,
                 'perform_time' => $transaction->status === TransactionStatusEnum::PAID
@@ -321,16 +355,18 @@ class PaymeProvider implements PaymentProviderInterface
                 'state'        => $this->getPaymeState($transaction->status),
                 'reason'       => null,
             ]
-        ]);
+        ], 200);
     }
 
     private function getStatement(array $params): \Illuminate\Http\JsonResponse
     {
         return response()->json([
-            'result' => [
+            "jsonrpc" => "2.0",
+            'id'      => request()->input('id'),
+            'result'  => [
                 'transactions' => []
             ]
-        ]);
+        ], 200);
     }
 
     private function authenticate(Request $request): bool
@@ -351,7 +387,7 @@ class PaymeProvider implements PaymentProviderInterface
 
     private function getPaymeState(TransactionStatusEnum $status): int
     {
-        return match($status) {
+        return match ($status) {
             TransactionStatusEnum::PROCESSING => 1,
             TransactionStatusEnum::PAID       => 2,
             TransactionStatusEnum::CANCELLED  => -1,
@@ -362,10 +398,12 @@ class PaymeProvider implements PaymentProviderInterface
     private function methodNotFound(): \Illuminate\Http\JsonResponse
     {
         return response()->json([
-            'error' => [
+            "jsonrpc" => "2.0",
+            'id'      => request()->input('id'),
+            'error'   => [
                 'code'    => -32601,
                 'message' => 'Method not found',
             ]
-        ]);
+        ], 200);
     }
 }
